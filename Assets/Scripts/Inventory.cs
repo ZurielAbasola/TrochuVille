@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// 
+// Summary:
+// Represents the player's inventory in the game.
+//
 [System.Serializable]
 public class Inventory
 {
+    //
+    // Summary:
+    // Represents the type of collectible item in the game.
+    //
     [System.Serializable]
     public class Slot
     {
@@ -21,6 +29,10 @@ public class Inventory
             maxAllowed = 99;
         }
 
+        // 
+        // Summary:
+        // Check if the slot can add an item.
+        //
         public bool CanAddItem() {
             if (count < maxAllowed) 
             {
@@ -30,13 +42,40 @@ public class Inventory
             return false;
         }
 
+        // 
+        // Summary:
+        // Add an item to the slot.
+        //
         public void AddItem(Collectible item) {
             this.type = item.type;
             this.icon = item.icon;
             count++;
         }
+
+        // 
+        // Summary:
+        // Remove an item from the slot.
+        //
+        public void RemoveItem() 
+        {
+            if (count > 0)
+            {
+                count--;
+
+                if (count == 0)
+                {
+                    type = CollectibleType.NONE;
+                    icon = null;
+                
+                }
+            }
+        }
     }
 
+    // 
+    // Summary:
+    // List of slots in the inventory.
+    //
     public List<Slot> slots = new List<Slot>();
 
     public Inventory(int numSlots)
@@ -48,6 +87,10 @@ public class Inventory
         }
     }
 
+    //
+    // Summary:
+    // Add an item to the inventory.
+    //
     public void Add(Collectible item) 
     {
         foreach (Slot slot in slots)
@@ -67,5 +110,14 @@ public class Inventory
                 return;
             }
         }
+    }
+
+    //
+    // Summary:
+    // Remove an item from the inventory.
+    //
+    public void Remove(int index)
+    {
+        slots[index].RemoveItem();
     }
 }
