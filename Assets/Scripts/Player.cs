@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int numEggplantSeed = 0;
+    public Inventory inventory;
+
+    public void Awake()
+    {
+        inventory = new Inventory(21);
+    }
 }

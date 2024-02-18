@@ -1,20 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Serializable]
 public class Inventory
 {
+    [System.Serializable]
     public class Slot
     {
         public CollectibleType type;
         public int count;
         public int maxAllowed;
+        public Sprite icon;
 
         public Slot()
         {
             type = CollectibleType.NONE;
             count = 0;
             maxAllowed = 99;
+        }
+
+        public bool CanAddItem() {
+            if (count < maxAllowed) 
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddItem(Collectible item) {
+            this.type = item.type;
+            this.icon = item.icon;
+            count++;
         }
     }
 
@@ -29,11 +48,24 @@ public class Inventory
         }
     }
 
-    public void Add(CollectibleType typeToAdd) 
+    public void Add(Collectible item) 
     {
         foreach (Slot slot in slots)
         {
-            if (slot.type == typeToAdd && )
+            if (slot.type == item.type && slot.CanAddItem())
+            {
+                slot.AddItem(item);
+                return;
+            }
+        }
+
+        foreach (Slot slot in slots)
+        {
+            if(slot.type == CollectibleType.NONE)
+            {
+                slot.AddItem(item);
+                return;
+            }
         }
     }
 }
